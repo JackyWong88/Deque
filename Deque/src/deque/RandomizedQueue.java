@@ -7,6 +7,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdOut;
 
 /**
  *
@@ -80,10 +81,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // an iterator, doesn't implement remove() since it's optional
     private class ReverseArrayIterator implements Iterator<Item> {
         private int i;
+        private int[] keys;
 
         public ReverseArrayIterator() {
-            i = N-1;
-            if(N != 0) StdRandom.shuffle(a, 0, N-1);
+            i = N - 1;
+            if (N != 0) {
+                keys = new int[N];
+                for (int j = 0; j < N; j++) {
+                    keys[j] = j;
+                }
+                StdRandom.shuffle(keys, 0, N - 1);
+            }
         }
 
         public boolean hasNext() {
@@ -96,11 +104,29 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            return a[i--];
+            return a[keys[i--]];
         }
     }
 
     public static void main(String[] args) {  // unit testing
+        RandomizedQueue<Integer> q = new RandomizedQueue<Integer>();
+        StdOut.println("start of test");
+        int count = 0;
+        for (int i = 0; i < 10; i++) {
+            q.enqueue(i);
+        }
 
+        Iterator<Integer> iter = q.iterator();
+        Iterator<Integer> iter2 = q.iterator();
+        while (iter.hasNext()) {
+            StdOut.print(iter.next() + " ");
+        }
+
+        StdOut.print("\n");
+        while (iter2.hasNext()) {
+            StdOut.print(iter2.next() + " ");
+        }
+
+        return;
     }
 }
